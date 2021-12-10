@@ -1,0 +1,47 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+using namespace std;
+
+
+int main(){
+	
+	//输入一堆权值
+	int n;
+	cin>>n;
+	int *v=new int[n];
+	priority_queue<int,vector<int>,greater<int>>que;
+	 for(int i=0;i<n;i++){
+	 	cin>>v[i];
+	 }
+	 sort(v,v+n);
+	 for(int i=0;i<n;i++){
+	 	que.push(v[i]);
+	 }
+	 //每次取前两个
+	 while(que.size()!=1){
+	 	int a=que.top();
+	 	que.pop();
+	 	int b=que.top();
+	 	que.pop();
+	 	int c=que.top();
+	 	que.pop();
+	 	if(c>=a&&c>=b){
+		 	cout<<a<<' '<<b<<' '<<a+b<<endl;
+		 	que.push(c);
+		 	que.push(a+b);
+		 }
+		else if(b>=a&&b>=c){
+			cout<<a<<' '<<c<<" "<<a+c<<endl;
+			que.push(b);
+			que.push(a+c);
+		}
+		else {
+			cout<<c<<' '<<b<<' '<<b+c<<endl;
+			que.push(a);
+			que.push(b+c);
+		}
+	 }
+	return 0;
+}
