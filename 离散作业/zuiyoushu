@@ -1,0 +1,89 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int a[100][100];
+struct edge{
+	int v1;
+	int v2;
+	int len;
+}e[1000];
+int v[105];
+int sum=0;int cost=0;
+void QuickSort(int left,int right){
+	//从小到大，先选择左作为标兵
+	int i=left,j=right;
+	if(left>right)return;
+	while(i!=j){
+		while(e[j].len>=e[left].len&&i<j){
+			j--;
+		}
+		while(e[i].len<=e[left].len&&i<j){
+			i++;
+		}
+		if(i<j){
+			swap(e[i],e[j]);
+		}
+	}
+	swap(e[i],e[left]);
+	QuickSort(left,i-1);
+	QuickSort(i+1,right);
+	return;
+}
+int get(int i){
+	if(v[i]==i){
+		return i;
+	}
+	else{
+		v[i]=get(v[i]);
+		int temp=v[i];
+		return temp;
+	}
+}
+
+int Merge(int ii,int j){     //判断是否连通并且合并 
+	int temp1=get(ii);
+	int temp2=get(j);
+	if(temp1!=temp2){
+		v[temp2]=temp1;
+		return 1;
+	}
+	return 0;
+	
+}
+
+int main(){
+	
+	int n;
+	cin>>n;
+	int count=0;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			cin>>a[i][j];   //读入边权 
+			if(a[i][j]!=0){
+				e[count].len=a[i][j];
+				e[count].v1=i;
+				e[count].v2=j;
+				count++;
+			}
+		}
+	}
+	cout<<"\n"; 
+	//找出最小生成树,并查集 
+	         //结点0-n 
+	for(int i=0;i<n;i++){
+		v[i]=i;
+	}
+	//对边进行排序
+	QuickSort(0,count-1); 
+	for(int i=0;i<count;i++){
+	  if(Merge(e[i].v1,e[i].v2)){    //不知道要输出什么，把边输出出来吧 
+	  	sum++;
+	  	cost+=e[i].len;
+	  	cout<<e[i].v1+1<<' '<<e[i].v2+1<<" "<<e[i].len<<endl;
+	  }
+	  if(sum==n-1)break;	
+	}
+    cout<<cost;	
+	return 0;
+}
