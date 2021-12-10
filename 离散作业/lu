@@ -1,0 +1,49 @@
+#include<iostream>
+#include<vector>
+
+using namespace std;
+vector<int>v[100];
+int a[100][100];
+int b[100][100]={0};
+
+void dfs(int i,int cur,int j,int step,int end){
+	if(step>end)return;
+	if(step==end&&cur==j){
+	 b[i][j]++;
+	 return;
+	}
+	for(auto cur:v[cur]){
+		dfs(i,cur,j,step+1,end);
+	}
+}
+
+int main(){
+	
+	int n;
+	cin>>n;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			cin>>a[i][j];
+			if(a[i][j]!=0){
+				v[i].push_back(j);
+			}
+		}
+	}
+	int m;cin>>m;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			dfs(i,i,j,0,m);
+		}
+	}
+	cout<<"\n"; 
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			cout<<b[i][j]<<' ';
+			
+		}
+		cout<<'\n';
+	}
+	
+	
+	return 0;
+}
